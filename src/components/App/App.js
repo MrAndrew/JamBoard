@@ -32,7 +32,11 @@ class App extends React.Component {
   search(searchTerm) {
     console.log(searchTerm);
     let searchedTrackArray = Spotify.searchSpotify(searchTerm);
-    this.setState({searchResults: searchedTrackArray});
+    if (searchedTrackArray !== undefined) {
+      this.setState({searchResults: searchedTrackArray});
+    } else {
+      this.setState({searchResults: []});
+    }
   }
 
   savePlaylist() {

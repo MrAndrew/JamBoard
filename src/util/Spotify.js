@@ -69,7 +69,7 @@ fetch(`https://api.spotify.com/v1/users/${userID}/playlists/${playlistID}/tracks
       if (response.ok) {
         return response.json();
       }
-      throw new Error('Request failed!');
+      console.log("request failed");
     }, networkError => console.log(networkError.message)
   ).then(jsonResponse => {
     if (jsonResponse.track) {
@@ -81,7 +81,9 @@ fetch(`https://api.spotify.com/v1/users/${userID}/playlists/${playlistID}/tracks
         URI: track.uri,
       }))
     }
-  });
+  }).catch(error => {
+  console.log(error);
+});
 },//end search method
 
   getAccessToken() { ///problem function
