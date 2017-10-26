@@ -35,7 +35,7 @@ class TrackList extends React.Component {
         {
          this.props.tracks.map( //search button causing failure
            track => {
-             return <Track key={track.id} track={track} onAdd={this.props.onAdd} onRemove={this.props.onRemove} isRemoval={this.props.isRemoval}/>;
+             return <Track key={track.ID} track={track} onAdd={this.props.onAdd} onRemove={this.props.onRemove} isRemoval={this.props.isRemoval}/>;
            }
          )
        }
