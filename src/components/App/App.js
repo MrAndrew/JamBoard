@@ -11,15 +11,15 @@ class App extends React.Component {
     super(props);
     this.state = {
       searchResults: [
-        {name: 'searchName1', artist: 'artist', album: 'album'},
-        {name: 'searchName2', artist: 'artist', album: 'album'},
-        {name: 'searchName3', artist: 'artist', album: 'album'}
+        {name: 'searchName1', artist: 'artist', album: 'album', id: 1},
+        {name: 'searchName2', artist: 'artist', album: 'album', id: 2},
+        {name: 'searchName3', artist: 'artist', album: 'album', id: 3}
       ],
       playlistName: 'Sample Playlist Name',
       playlistTracks: [
-        {name: 'playlistname1', artist: 'artist', album: 'album'},
-        {name: 'playlistname2', artist: 'artist', album: 'album'},
-        {name: 'playlistname3', artist: 'artist', album: 'album'},
+        {name: 'playlistname1', artist: 'artist', album: 'album', id: 4},
+        {name: 'playlistname2', artist: 'artist', album: 'album', id: 5},
+        {name: 'playlistname3', artist: 'artist', album: 'album', id: 6},
       ],
     };
     this.addTrack = this.addTrack.bind(this);
