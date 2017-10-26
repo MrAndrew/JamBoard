@@ -61,7 +61,8 @@ fetch(`https://api.spotify.com/v1/users/${userID}/playlists/${playlistID}/tracks
     if (!userAccessToken) {
       this.getAccessToken();
     };
-    fetch(`https://api.spotify.com/v1/search?q=${searchTerm}&type=track`,
+    console.log(userAccessToken);
+    return fetch(`https://api.spotify.com/v1/search?q=${searchTerm}&type=track`,
       {
         headers: {Authorization: `Bearer ${userAccessToken}`}
       }
@@ -72,8 +73,9 @@ fetch(`https://api.spotify.com/v1/users/${userID}/playlists/${playlistID}/tracks
       console.log("request failed");
     }, networkError => console.log(networkError.message)
   ).then(jsonResponse => {
-    if (jsonResponse.track) {
-      return jsonResponse.track.map(track => ({
+    console.log(jsonResponse);
+    if (jsonResponse.tracks) {
+      return jsonResponse.tracks.items.map(track => ({
         ID: track.id,
         Name: track.name,
         Artist: track.artists[0].name,
@@ -87,7 +89,7 @@ fetch(`https://api.spotify.com/v1/users/${userID}/playlists/${playlistID}/tracks
 },//end search method
 
   getAccessToken() { ///problem function
-    let expiresIn;
+    //let expiresIn;
     if(userAccessToken) {
       return userAccessToken;
     } else if(!userAccessToken) {
@@ -104,7 +106,8 @@ fetch(`https://api.spotify.com/v1/users/${userID}/playlists/${playlistID}/tracks
 
   parseToken(urlToParse) {
     if(urlToParse !== redirectURI) {
-      userAccessToken = urlToParse.match(/access_token=([^&]*)/);
+      //userAccessToken = urlToParse.match(/access_token=([^&]*)/);
+      userAccessToken = urlToParse.match(/access_token=([^&]*)/)[1];
       let expiresIn = urlToParse.match(/expires_in=([^&]*)/);
       window.setTimeout(() => userAccessToken = '', expiresIn * 1000);
       window.history.pushState('Access Token', null, '/');

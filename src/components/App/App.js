@@ -17,9 +17,9 @@ class App extends React.Component {
       ],
       playlistName: 'Sample Playlist Name',
       playlistTracks: [
-        {name: 'name1', artist: 'artist', album: 'album'},
-        {name: 'name2', artist: 'artist', album: 'album'},
-        {name: 'name3', artist: 'artist', album: 'album'},
+        {name: 'playlistname1', artist: 'artist', album: 'album'},
+        {name: 'playlistname2', artist: 'artist', album: 'album'},
+        {name: 'playlistname3', artist: 'artist', album: 'album'},
       ],
     };
     this.addTrack = this.addTrack.bind(this);
@@ -31,12 +31,14 @@ class App extends React.Component {
 
   search(searchTerm) {
     console.log(searchTerm);
-    let searchedTrackArray = Spotify.searchSpotify(searchTerm);
-    if (searchedTrackArray !== undefined) {
-      this.setState({searchResults: searchedTrackArray});
-    } else {
-      this.setState({searchResults: []});
-    }
+    Spotify.searchSpotify(searchTerm).then(searchedTrackArray => {
+      if (searchedTrackArray !== undefined) {
+        console.log(searchedTrackArray);
+        this.setState({searchResults: searchedTrackArray});
+      } else {
+        this.setState({searchResults: []});
+      }// Do stuff here with searchedTrackArray
+    });
   }
 
   savePlaylist() {
