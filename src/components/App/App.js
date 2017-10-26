@@ -58,7 +58,7 @@ class App extends React.Component {
   }
 
   removeTrack(track) {
-    if(this.state.playlistTracks.indexOf(track.id) != -1) {
+    if(this.state.playlistTracks.indexOf(track.id) !== -1) {
       this.state.playlistTracks.pop(this.state.playlistTracks.indexOf(track.id));
     }
   }
