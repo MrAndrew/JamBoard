@@ -54,14 +54,14 @@ class App extends React.Component {
   }
 
   addTrack(track) {
-    if(this.state.playlistTracks.indexOf(track.id) === -1) {
+    if(this.state.playlistTracks.indexOf(track.ID) === -1) {
       this.state.playlistTracks.push(track);
     }
   }
 
   removeTrack(track) {
-    if(this.state.playlistTracks.indexOf(track.id) !== -1) {
-      this.state.playlistTracks.pop(this.state.playlistTracks.indexOf(track.id));
+    if(this.state.playlistTracks.indexOf(track.ID) !== -1) {
+      this.state.playlistTracks.pop(this.state.playlistTracks.indexOf(track.ID));
     }
   }
 

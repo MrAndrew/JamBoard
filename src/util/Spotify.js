@@ -89,18 +89,18 @@ fetch(`https://api.spotify.com/v1/users/${userID}/playlists/${playlistID}/tracks
 },//end search method
 
   getAccessToken() { ///problem function
-    //let expiresIn;
     if(userAccessToken) {
       return userAccessToken;
     } else if(!userAccessToken) {
       let urlToParse = window.location.href;
-      this.parseToken(urlToParse);
-    };
-    if (userAccessToken) {
-      return userAccessToken;
-    } else if (!userAccessToken) {
-      window.location = `https://accounts.spotify.com/authorize?client_id=${clientID}&response_type=token&scope=playlist-modify-public&redirect_uri=${redirectURI}`;
-      //redirect to sign in page
+      if (urlToParse !== redirectURI) {
+        this.parseToken(urlToParse);
+      } else if (urlToParse === redirectURI) {
+      window.location = `https://accounts.spotify.com/authorize?client_id=${clientID}&response_type=token&redirect_uri=${redirectURI}`;
+      //reccomend adding a state to ensure to ensure valitity
+      //possible add scopes for more functionality
+      //redirect to sign in page & asks permission to modify user playlists
+      }
     }
   },//add method that gets an access token
 
@@ -111,6 +111,7 @@ fetch(`https://api.spotify.com/v1/users/${userID}/playlists/${playlistID}/tracks
       let expiresIn = urlToParse.match(/expires_in=([^&]*)/);
       window.setTimeout(() => userAccessToken = '', expiresIn * 1000);
       window.history.pushState('Access Token', null, '/');
+      return userAccessToken;
     } else {
       console.log('No Access Token recieved!/No redirect URL!');
     }
