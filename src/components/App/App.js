@@ -16,11 +16,7 @@ class App extends React.Component {
         {Name: 'searchName3', Artist: 'artist', Album: 'album', ID: 3}
       ],
       playlistName: 'Sample Playlist Name',
-      playlistTracks: [
-        {Name: 'playlistname1', Artist: 'artist', Album: 'album', ID: 4},
-        {Name: 'playlistname2', Artist: 'artist', Album: 'album', ID: 5},
-        {Name: 'playlistname3', Artist: 'artist', Album: 'album', ID: 6},
-      ],
+      playlistTracks: [],
     };
     this.addTrack = this.addTrack.bind(this);
     this.removeTrack = this.removeTrack.bind(this);
@@ -54,14 +50,16 @@ class App extends React.Component {
   }
 
   addTrack(track) {
-    if(this.state.playlistTracks.indexOf(track.ID) === -1) {
+    if(this.state.playlistTracks.indexOf(track) === -1) {
       this.state.playlistTracks.push(track);
+      this.setState({ playlistTracks: this.state.playlistTracks });
     }
   }
 
   removeTrack(track) {
-    if(this.state.playlistTracks.indexOf(track.ID) !== -1) {
-      this.state.playlistTracks.pop(this.state.playlistTracks.indexOf(track.ID));
+    if(this.state.playlistTracks.indexOf(track) !== -1) {
+      this.state.playlistTracks.pop(track);
+      this.setState({ playlistTracks: this.state.playlistTracks })
     }
   }
 
