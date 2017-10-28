@@ -2,7 +2,7 @@
 const clientID = '78272ce624b84226a22f0f3dc2111fa0';
 const redirectURI = 'http://localhost:3000/';
 let userAccessToken;
-let userID;
+let userID ;
 let playlistID;
 
 const Spotify = {
@@ -23,13 +23,15 @@ const Spotify = {
       throw new Error('Request failed!');
     }, networkError => console.log(networkError.message)
   ).then(jsonResponse => {
-    return userID = jsonResponse.id;
-  });
+    console.log('The user ID from json: ' + jsonResponse.id)
+    return userID = JSON.stringify(jsonResponse.id);
+  })
   //fetch POST to save/create a playlist to the user's account
   fetch(`https://api.spotify.com/v1/users/${userID}/playlists`, {
-    headers: {Authorization: `Bearer ${userAccessToken}`},
+    headers: {Authorization: `Bearer ${userAccessToken}`,
+              'Content-Type': 'application/json'},
     method: 'POST',
-    body: JSON.stringify({id:'200'})
+    body: JSON.stringify({id: 200, name: playlistName})
   }).then(response => {
     if (response.ok) {
       return response.json();
@@ -43,7 +45,7 @@ const Spotify = {
 fetch(`https://api.spotify.com/v1/users/${userID}/playlists/${playlistID}/tracks`, {
   headers: {Authorization: `Bearer ${userAccessToken}`},
   method: 'POST',
-  body: JSON.stringify({id:'200'}), //trackURIs here?
+  body: JSON.stringify({id: 200}), //trackURIs here?
 }).then(response => {
   if (response.ok) {
     return response.json();
@@ -90,33 +92,22 @@ fetch(`https://api.spotify.com/v1/users/${userID}/playlists/${playlistID}/tracks
   getAccessToken() { ///problem function
     if(userAccessToken) {
       return new Promise(resolve => resolve(userAccessToken));
-    } else if(!userAccessToken) {
-      let urlToParse = window.location.href;
-      if (urlToParse !== redirectURI) {
-        this.parseToken(urlToParse);
-      } else if (urlToParse === redirectURI) {
+    }
+      const urlAccessToken = window.location.href.match(/access_token=([^&]*)/);
+      const urlExpiresIn = window.location.href.match(/expires_in=([^&]*)/);
+      if (urlAccessToken && urlExpiresIn) {
+        userAccessToken = urlAccessToken[1];
+        let expiresIn = urlExpiresIn[1];
+        window.setTimeout(() => userAccessToken = '', expiresIn * 1000);
+        window.history.pushState('Access Token', null, '/');
+      } else {
       window.location = `https://accounts.spotify.com/authorize?client_id=${clientID}&response_type=token&redirect_uri=${redirectURI}`;
       //reccomend adding a state to ensure to ensure valitity
       //possible add scopes for more functionality
       //redirect to sign in page & asks permission to modify user playlists
       }
     }
-  },//add method that gets an access token
-
-  parseToken(urlToParse) {
-    if(urlToParse !== redirectURI) {
-      //userAccessToken = urlToParse.match(/access_token=([^&]*)/);
-      userAccessToken = urlToParse.match(/access_token=([^&]*)/)[1];
-      let expiresIn = urlToParse.match(/expires_in=([^&]*)/);
-      window.setTimeout(() => userAccessToken = '', expiresIn * 1000);
-      window.history.pushState('Access Token', null, '/');
-      return userAccessToken;
-    } else {
-      console.log('No Access Token recieved!/No redirect URL!');
-    }
-  }
-
-//add a method that saves user's playlist to their Spotify account
-};//end spotify object
+  //add a method that saves user's playlist to their Spotify account
+  };//end spotify object
 
 export default Spotify;
