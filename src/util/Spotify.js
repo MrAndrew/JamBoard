@@ -33,10 +33,8 @@ const Spotify = {
   ).then(jsonResponse => {
     if(jsonResponse.id) {
       return jsonResponse.id;
-    }//for some reason the userID isn't saved to be used by next fetch, but the following console log shows the actual value, why?
-    console.log(`The user ID from json: ${userID}`);
-  }).then(userID => {//the userID is not being returned to use in the following fetch statements
-  //as the post userID in the POST url is 'undefined'
+    }
+  }).then(userID => {
   //fetch POST to save/create a playlist to the user's account
   fetch(`https://api.spotify.com/v1/users/${userID}/playlists`, { //userID is undefined
       method: 'POST',
@@ -54,14 +52,12 @@ const Spotify = {
   if (jsonResponse.id) {
     return jsonResponse.id;
   }
-  console.log(`The playlist ID from json: ${playlistID}`);
 }).then(playlistID => {
     //fetch POST to add tracks to the playlist
-    fetch(`https://api.spotify.com/v1/users/andrew.mr/playlists/${playlistID}/tracks`, {
+    fetch(`https://api.spotify.com/v1/users/${userID}/playlists/${playlistID}/tracks`, {
          method: 'POST',
          headers: postHeaders,
          body: JSON.stringify({
-           id: 200,
            uris: trackURIs,
          }),
     }).then(response => {
