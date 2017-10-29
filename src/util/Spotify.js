@@ -2,8 +2,6 @@
 const clientID = '78272ce624b84226a22f0f3dc2111fa0';
 const redirectURI = 'http://localhost:3000/';
 let userAccessToken;
-let userID ;
-let playlistID;
 
 const Spotify = {
 
@@ -11,10 +9,20 @@ const Spotify = {
     if(!playlistName || !trackURIs) {
       return;
     }
+    let access_token = userAccessToken;
+    let headers = {
+      Authorization: `Bearer ${access_token}`
+    };
+    let postHeaders = {
+      Authorization: `Bearer ${access_token}`,
+      "Content-Type": "application/json"
+    };
+    let userID;
+    let playlistID;
     //fetch user id
-    fetch('https://api.spotify.com/v1/me',
+    fetch(`https://api.spotify.com/v1/me`,
       {
-        headers: {Authorization: `Bearer ${userAccessToken}`}
+        headers: headers
       }
     ).then(response => {
       if (response.ok) {
@@ -23,15 +31,19 @@ const Spotify = {
       throw new Error('Request failed!');
     }, networkError => console.log(networkError.message)
   ).then(jsonResponse => {
-    console.log('The user ID from json: ' + jsonResponse.id)
-    return userID = JSON.stringify(jsonResponse.id);
-  })
+    if(jsonResponse.id) {
+      userID = jsonResponse.id;
+    }//for some reason the userID isn't saved to be used by next fetch, but the following console log shows the actual value, why?
+    console.log(`The user ID from json: ${userID}`);
+  })//the userID is not being returned to use in the following fetch statements
+  //as the post userID in the POST url is 'undefined'
   //fetch POST to save/create a playlist to the user's account
-  fetch(`https://api.spotify.com/v1/users/${userID}/playlists`, {
-    headers: {Authorization: `Bearer ${userAccessToken}`,
-              'Content-Type': 'application/json'},
-    method: 'POST',
-    body: JSON.stringify({id: 200, name: playlistName})
+  fetch(`https://api.spotify.com/v1/users/${userID}/playlists`, { //userID is undefined
+      method: 'POST',
+      headers: postHeaders,
+      body: JSON.stringify({
+        name: playlistName,
+      }),
   }).then(response => {
     if (response.ok) {
       return response.json();
@@ -39,13 +51,19 @@ const Spotify = {
     throw new Error('POST playlist request failed!');
   }, networkError => console.log(networkError.message)
 ).then(jsonResponse => {
-  return playlistID = jsonResponse.id;
-});
+  if (jsonResponse.id) {
+    playlistID = jsonResponse.id;
+  }
+  console.log(`The playlist ID from json: ${playlistID}`);
+})
 //fetch POST to add tracks to the playlist
-fetch(`https://api.spotify.com/v1/users/${userID}/playlists/${playlistID}/tracks`, {
-  headers: {Authorization: `Bearer ${userAccessToken}`},
-  method: 'POST',
-  body: JSON.stringify({id: 200}), //trackURIs here?
+fetch(`https://api.spotify.com/v1/users/andrew.mr/playlists/${playlistID}/tracks`, {
+     method: 'POST',
+     headers: postHeaders,
+     body: JSON.stringify({
+       id: 200,
+       uris: trackURIs,
+     }),
 }).then(response => {
   if (response.ok) {
     return response.json();
@@ -54,7 +72,7 @@ fetch(`https://api.spotify.com/v1/users/${userID}/playlists/${playlistID}/tracks
 }, networkError => console.log(networkError.message)
 ).then(jsonResponse => {
   //do something
-});
+})
 
 },//end savePlaylist method
 
@@ -89,7 +107,7 @@ fetch(`https://api.spotify.com/v1/users/${userID}/playlists/${playlistID}/tracks
 });
 },//end search method
 
-  getAccessToken() { ///problem function
+  getAccessToken() {
     if(userAccessToken) {
       return new Promise(resolve => resolve(userAccessToken));
     }
@@ -101,7 +119,7 @@ fetch(`https://api.spotify.com/v1/users/${userID}/playlists/${playlistID}/tracks
         window.setTimeout(() => userAccessToken = '', expiresIn * 1000);
         window.history.pushState('Access Token', null, '/');
       } else {
-      window.location = `https://accounts.spotify.com/authorize?client_id=${clientID}&response_type=token&redirect_uri=${redirectURI}`;
+      window.location = `https://accounts.spotify.com/authorize?client_id=${clientID}&response_type=token&scope=playlist-modify-public&redirect_uri=${redirectURI}`;
       //reccomend adding a state to ensure to ensure valitity
       //possible add scopes for more functionality
       //redirect to sign in page & asks permission to modify user playlists
