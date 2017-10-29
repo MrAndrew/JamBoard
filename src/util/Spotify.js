@@ -19,76 +19,63 @@ const Spotify = {
     };
     let userID;
     let playlistID;
-    if(!userID) {
-      userID = this.getUserID(headers);
-    };
-    if (userID && !playlistID) {
-      playlistID = this.getPlaylistID(postHeaders, userID, playlistName);
-    };
-    if (userID && playlistID) {
-      this.savePlaylistTracks(postHeaders, trackURIs, playlistID, userID);
-    };
-  },//end savePlaylist method
-
-    getUserID(headers) {//fetch user id
-      fetch(`https://api.spotify.com/v1/me`,
-        {
-          headers: headers
-        }
-      ).then(response => {
-        if (response.ok) {
-          return response.json();
-        }
-        throw new Error('Request failed!');
-      }, networkError => console.log(networkError.message)
-    ).then(jsonResponse => {
-      if(jsonResponse.id) {
-        return jsonResponse.id;
-      }//for some reason the userID isn't saved to be used by next fetch, but the following console log shows the actual value, why?
-    })
-  },//end getUserID
-//the userID is not being returned to use in the following fetch statements
-  //as the post userID in the POST url is 'undefined'
-  //fetch POST to save/create a playlist to the user's account
-
-  getPlaylistID(postHeaders, userID, playlistName) {
-      fetch(`https://api.spotify.com/v1/users/${userID}/playlists`, { //userID is undefined
-        method: 'POST',
-        headers: postHeaders,
-        body: JSON.stringify({
-          name: playlistName,
-        }),
-    }).then(response => {
+    //fetch user id
+    fetch(`https://api.spotify.com/v1/me`,
+      {
+        headers: headers
+      }
+    ).then(response => {
       if (response.ok) {
         return response.json();
       }
-      throw new Error('POST playlist request failed!');
+      throw new Error('Request failed!');
     }, networkError => console.log(networkError.message)
   ).then(jsonResponse => {
-    if (jsonResponse.id) {
+    if(jsonResponse.id) {
       return jsonResponse.id;
-    }
-  })
-},//end getPlaylistID method
-
-//fetch POST to add tracks to the playlist
-  savePlaylistTracks(postHeaders, trackURIs, playlistID, userID) {
-    fetch(`https://api.spotify.com/v1/users/${userID}/playlists/${playlistID}/tracks`, {
-       method: 'POST',
-       headers: postHeaders,
-       body: JSON.stringify({
-         id: playlistID,
-         uris: trackURIs,
-       }),
+    }//for some reason the userID isn't saved to be used by next fetch, but the following console log shows the actual value, why?
+    console.log(`The user ID from json: ${userID}`);
+  }).then(userID => {//the userID is not being returned to use in the following fetch statements
+  //as the post userID in the POST url is 'undefined'
+  //fetch POST to save/create a playlist to the user's account
+  fetch(`https://api.spotify.com/v1/users/${userID}/playlists`, { //userID is undefined
+      method: 'POST',
+      headers: postHeaders,
+      body: JSON.stringify({
+        name: playlistName,
+      }),
   }).then(response => {
     if (response.ok) {
       return response.json();
     }
-    throw new Error('POST tracks request failed!');
+    throw new Error('POST playlist request failed!');
   }, networkError => console.log(networkError.message)
-  ).then(jsonResponse => {
-    console.log(`The respose from savePlaylistTracks is: ${jsonResponse}`);
+).then(jsonResponse => {
+  if (jsonResponse.id) {
+    return jsonResponse.id;
+  }
+  console.log(`The playlist ID from json: ${playlistID}`);
+}).then(playlistID => {
+    //fetch POST to add tracks to the playlist
+    fetch(`https://api.spotify.com/v1/users/andrew.mr/playlists/${playlistID}/tracks`, {
+         method: 'POST',
+         headers: postHeaders,
+         body: JSON.stringify({
+           id: 200,
+           uris: trackURIs,
+         }),
+    }).then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error('POST tracks request failed!');
+    }, networkError => console.log(networkError.message)
+    ).then(jsonResponse => {
+      //do something
+    })
   })
+})
+
 },//end savePlaylist method
 
   searchSpotify(searchTerm) {
