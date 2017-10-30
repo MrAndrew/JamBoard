@@ -69,7 +69,8 @@ const Spotify = {
       throw new Error('POST tracks request failed!');
     }, networkError => console.log(networkError.message)
     ).then(jsonResponse => {
-      //consider adding a success alert message to let the user know the playlist was saved successfully
+      //An alert message to let the user know the playlist was saved successfully
+      window.alert('Successfully added your playlist, check your Spotify account!');
     })
   })
 })
