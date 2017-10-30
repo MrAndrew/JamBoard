@@ -10,7 +10,8 @@ class SearchBar extends React.Component {
     this.handleTermChange= this.handleTermChange.bind(this);
     this.search = this.search.bind(this);
     document.addEventListener('keypress', (event) => {
-      // each character has a keyCode. The keyCode for enter is 13
+      // each character has a keyCode. The keyCode for enter is 13 this allows the
+      //  user to press the 'Enter' key instead of having to press the search button
       if (event.keyCode === 13) {
       this.search();
       }

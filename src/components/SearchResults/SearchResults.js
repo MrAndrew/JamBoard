@@ -3,6 +3,7 @@ import './SearchResults.css';
 import TrackList from '../TrackList/TrackList';
 
 class SearchResults extends React.Component {
+  //displays the searchResults from Spotify
   render () {
     return (
       <div className="SearchResults">

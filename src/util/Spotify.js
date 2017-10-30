@@ -67,7 +67,7 @@ const Spotify = {
       throw new Error('POST tracks request failed!');
     }, networkError => console.log(networkError.message)
     ).then(jsonResponse => {
-      //do something
+      //consider adding a success alert message to let the user know the playlist was saved successfully
     })
   })
 })
@@ -103,8 +103,9 @@ const Spotify = {
   }).catch(error => {
   console.log(error);
 });
-},//end search method
+},//end searchSpotify method
 
+//redirect to sign in page & asks permission to modify user playlists if not already done
   getAccessToken() {
     if(userAccessToken) {
       return new Promise(resolve => resolve(userAccessToken));
@@ -119,11 +120,10 @@ const Spotify = {
       } else {
       window.location = `https://accounts.spotify.com/authorize?client_id=${clientID}&response_type=token&scope=playlist-modify-public&redirect_uri=${redirectURI}`;
       //reccomend adding a state to ensure to ensure valitity
-      //possible add scopes for more functionality
-      //redirect to sign in page & asks permission to modify user playlists
+      //possibly add more scopes for more functionality
       }
-    }
-  //add a method that saves user's playlist to their Spotify account
+    },//end getAccessToken method
+
   };//end spotify object
 
 export default Spotify;

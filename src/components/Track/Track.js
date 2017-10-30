@@ -10,7 +10,6 @@ class Track extends React.Component {
 
   renderAction(isRemoval) {
     if(isRemoval) {
-       // fix b/c onAdd and onRemove are props in tracklist
       return (<a className="Track-action" onClick={this.removeTrack}> - </a>);
     } else {
       return (<a className="Track-action" onClick={this.addTrack}> + </a>);

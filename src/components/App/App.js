@@ -11,11 +11,11 @@ class App extends React.Component {
     super(props);
     this.state = {
       searchResults: [
-        {Name: 'searchName1', Artist: 'artist', Album: 'album', ID: 1},
-        {Name: 'searchName2', Artist: 'artist', Album: 'album', ID: 2},
-        {Name: 'searchName3', Artist: 'artist', Album: 'album', ID: 3}
+        {Name: 'Example Song 1', Artist: 'Artist One', Album: 'Album', ID: 1},
+        {Name: 'Example Song 2', Artist: 'Artist Two', Album: 'Album', ID: 2},
+        {Name: 'Example Song 3', Artist: 'Artist Three', Album: 'Album', ID: 3}
       ],
-      playlistName: 'Sample Playlist Name',
+      playlistName: 'Type Playlist Name Here',
       playlistTracks: [],
     };
     this.addTrack = this.addTrack.bind(this);
@@ -33,36 +33,40 @@ class App extends React.Component {
         this.setState({searchResults: searchedTrackArray});
       } else {
         this.setState({searchResults: []});
-      }// Do stuff here with searchedTrackArray
+      }
     });
   }
-
+//called on button press "Save To Spotify"
   savePlaylist() {
+    //have save this way because the tracks are an array of objects and you want
+    //an array of values from the key 'URI'
     const trackURIs = this.state.playlistTracks.map(uri => uri.URI);
     console.log(trackURIs);
     Spotify.savePlaylist(this.state.playlistName, trackURIs);
-    this.setState({ playlistName: 'New Playlist' });
+    this.setState({ playlistName: 'Type Playlist Name Here' });
     this.setState({ searchResults: [] });
   }
-
+//updates the state value to the current name entered by the user dynamically
+//only problem is that it's called with each button press from the user (thus
+// state is being changed with each key press from the user)
   updatePlaylistName(name) {
     this.setState({playlistName: name})
   }
-
+//puts tracks from search into the playlist
   addTrack(track) {
     if(this.state.playlistTracks.indexOf(track) === -1) {
       this.state.playlistTracks.push(track);
       this.setState({ playlistTracks: this.state.playlistTracks });
     }
   }
-
+//removes a track from the playlist
   removeTrack(track) {
     if(this.state.playlistTracks.indexOf(track) !== -1) {
       this.state.playlistTracks.pop(track);
       this.setState({ playlistTracks: this.state.playlistTracks })
     }
   }
-
+//renders the search and create playlist UI page interface
   render() {
     return (
       <div>
