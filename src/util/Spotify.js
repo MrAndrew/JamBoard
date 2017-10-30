@@ -35,8 +35,9 @@ const Spotify = {
       return jsonResponse.id;
     }
   }).then(userID => {
-  //fetch POST to save/create a playlist to the user's account
-  fetch(`https://api.spotify.com/v1/users/${userID}/playlists`, { //userID is undefined
+  //fetch POST to save/create a playlist to the user's account with userID returned from
+  //previous POST fetch request
+  fetch(`https://api.spotify.com/v1/users/${userID}/playlists`, {
       method: 'POST',
       headers: postHeaders,
       body: JSON.stringify({
@@ -53,7 +54,8 @@ const Spotify = {
     return jsonResponse.id;
   }
 }).then(playlistID => {
-    //fetch POST to add tracks to the playlist
+    //fetch POST to add tracks to the playlist with previous POST fetch return of
+    //userID and playlistID values
     fetch(`https://api.spotify.com/v1/users/${userID}/playlists/${playlistID}/tracks`, {
          method: 'POST',
          headers: postHeaders,
