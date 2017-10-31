@@ -26,10 +26,10 @@ class App extends React.Component {
   }
 
   search(searchTerm) {
-    console.log(searchTerm);
+    //console.log(searchTerm);
     Spotify.searchSpotify(searchTerm).then(searchedTrackArray => {
       if (searchedTrackArray !== undefined) {
-        console.log(searchedTrackArray);
+        //console.log(searchedTrackArray);
         this.setState({searchResults: searchedTrackArray});
       } else {
         this.setState({searchResults: []});
@@ -41,7 +41,7 @@ class App extends React.Component {
     //have save this way because the tracks are an array of objects and you want
     //an array of values from the key 'URI'
     const trackURIs = this.state.playlistTracks.map(uri => uri.URI);
-    console.log(trackURIs);
+    //console.log(trackURIs);
     Spotify.savePlaylist(this.state.playlistName, trackURIs);
     this.setState({ playlistName: 'Type Playlist Name Here' });
     this.setState({ searchResults: [] });

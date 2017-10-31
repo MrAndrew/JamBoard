@@ -7,7 +7,7 @@ class TrackList extends React.Component {
 //in the state of the App.js Component which can be used by both searchResults and
 //the current tracks in PlayList
   render () {
-    console.log(this.props.tracks);
+    //console.log(this.props.tracks);
     return (
       <div className="TrackList">
         {

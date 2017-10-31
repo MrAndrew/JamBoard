@@ -1,6 +1,6 @@
 
 const clientID = '78272ce624b84226a22f0f3dc2111fa0';
-const redirectURI = 'http://localhost:3000/';
+const redirectURI = 'https://Jamboard.surge.sh/';
 let userAccessToken;
 
 const Spotify = {
@@ -81,7 +81,7 @@ const Spotify = {
     if (!userAccessToken) {
       this.getAccessToken();
     };
-    console.log(userAccessToken);
+    //console.log(userAccessToken);
     return fetch(`https://api.spotify.com/v1/search?q=${searchTerm}&type=track`,
       {
         headers: {Authorization: `Bearer ${userAccessToken}`}
@@ -93,7 +93,7 @@ const Spotify = {
       console.log("request failed");
     }, networkError => console.log(networkError.message)
   ).then(jsonResponse => {
-    console.log(jsonResponse);
+    //console.log(jsonResponse);
     if (jsonResponse.tracks) {
       return jsonResponse.tracks.items.map(track => ({
         ID: track.id,
