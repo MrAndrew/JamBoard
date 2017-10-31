@@ -62,7 +62,8 @@ class App extends React.Component {
 //removes a track from the playlist
   removeTrack(track) {
     if(this.state.playlistTracks.indexOf(track) !== -1) {
-      this.state.playlistTracks.pop(track);
+      let index = this.state.playlistTracks.indexOf(track);
+      this.state.playlistTracks.splice(index, 1);
       this.setState({ playlistTracks: this.state.playlistTracks })
     }
   }
