@@ -1,6 +1,6 @@
 
 const clientID = '78272ce624b84226a22f0f3dc2111fa0';
-const redirectURI = 'https://Jamboard.surge.sh/';
+const redirectURI = 'http://localhost:3000/';
 let userAccessToken;
 
 const Spotify = {
@@ -82,7 +82,7 @@ const Spotify = {
       this.getAccessToken();
     };
     //console.log(userAccessToken);
-    return fetch(`https://api.spotify.com/v1/search?q=${searchTerm}&type=track`,
+    return fetch(`https://api.spotify.com/v1/search?q=${searchTerm}&type=track&limit=50`,
       {
         headers: {Authorization: `Bearer ${userAccessToken}`}
       }
@@ -93,7 +93,7 @@ const Spotify = {
       console.log("request failed");
     }, networkError => console.log(networkError.message)
   ).then(jsonResponse => {
-    //console.log(jsonResponse);
+    //console.log(`track json response ${jsonResponse.tracks.items}`);
     if (jsonResponse.tracks) {
       return jsonResponse.tracks.items.map(track => ({
         ID: track.id,
@@ -107,6 +107,40 @@ const Spotify = {
   console.log(error);
 });
 },//end searchSpotify method
+
+getAudioFeatures(trackIDs) {
+  trackIDs = trackIDs.join(',');
+  //console.log(`these are the trackIDs: ${trackIDs}`);
+  if (!userAccessToken) {
+    this.getAccessToken();
+  };
+  return fetch(`https://api.spotify.com/v1/audio-features/?ids=${trackIDs}`,
+    {
+      headers: {Authorization: `Bearer ${userAccessToken}`}
+    }
+  ).then(response => {
+    if (response.ok) {
+        return response.json();
+      }
+      console.log("request failed");
+    }, networkError => console.log(networkError.message)
+  ).then(jsonResponse => {
+    //console.log(`audio_features jsonResponse: ${jsonResponse.audio_features}`);
+    //console.log(``);
+    if (jsonResponse.audio_features) {
+      //in case one of the tracks doesn't contain audio_features
+      let rawAFArray = jsonResponse.audio_features.filter(trackAF => (trackAF !== null));
+      return rawAFArray.map(trackAF => ({
+        ID: trackAF.id,
+        Danceability: trackAF.danceability,
+        Energy: trackAF.energy,
+        Liveness: trackAF.liveness,
+      }))
+    }
+  }).catch(error => {
+  console.log(error);
+});
+}, //end getAudioFeatures method
 
 //redirect to sign in page & asks permission to modify user playlists if not already done
   getAccessToken() {

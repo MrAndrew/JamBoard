@@ -24,6 +24,7 @@ h1 .highlight {
 h2 {
   font-family: 'Poppins', sans-serif;
   font-size: 1.55rem;
+  text-align: center;
 }
 
 .App {
@@ -49,4 +50,15 @@ h2 {
     align-items: center;
     flex-direction: column;
   }
+}
+.FilterRange {
+  padding-top: 2em;
+  margin-left: 25%;
+  align-items: center;
+  width: 50%;
+}
+.FilterRange p {
+  text-align: center;
+  margin: 0 auto;
+  align: center;
 }
