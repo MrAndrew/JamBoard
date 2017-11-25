@@ -5,27 +5,40 @@
   padding-top: 1em;
   margin-bottom: 4rem;
   float: center;
+  width: 100%;
 }
 
 .slidecontainer {
     display: flex;
     flex-direction: column;
-    padding-left: 3rem;
+    padding-left: 5vw;
     align-items: center;
     float: center;
-    width: 25%; /* Width of the outside container */
+    justify-content: space-between;
+    height: 25vh;
+    width: 50vw; /* Width of the outside container */
+}
+
+@media only screen and (max-width: 860px) {
+  .SearchFilters {
+    flex-direction: column;
+  }
+  .SearchFilters .slidecontainer a {
+    font-size: 2vh;
+    width: 60%;
+  }
 }
 
 .slidecontainer a {
-  width: 150px;
+  width: 80%;
   text-align: center;
   padding-left: 1em;
   padding-right: 1em;
   padding-top: .5em;
   padding-bottom: .5em;
-  font-size: 1em;
-  border-radius: 10em;
-  background-size: 2em;
+  font-size: 1.25vw;
+  border-radius: 1em;
+  background-size: 100%;
   background-color: #0e35f7;
   font-family: 'Work Sans', sans-serif;
 }

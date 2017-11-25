@@ -238,19 +238,21 @@ class App extends React.Component {
           <SearchBar onSearch={this.search}/>
           <h2> Select audio features to search for :</h2>
           <div className="FilterRange">
-            <p>Filter Values within a range of:</p>
+            <h4>Filter features within a range of:</h4>
             <Slider value={this.state.FilterRange} orientation="horizontal" onChange={this.handleFilterRangeChange} />
           </div>
-          <SearchFilters
-            DanceabilitySelect={this.handleDanceabilitySelect}
-            EnergySelect={this.handleEnergySelect}
-            LivenessSelect={this.handleLivenessSelect}h
-            DanceabilityValue={this.state.DanceabilityValue}
-            EnergyValue={this.state.EnergyValue}
-            LivenessValue={this.state.LivenessValue}
-            handleDanceabilityValueChange={this.handleDanceabilityValueChange}
-            handleEnergyValueChange={this.handleEnergyValueChange}
-            handleLivenessValueChange={this.handleLivenessValueChange} />
+          <div className="searchfilters">
+            <SearchFilters
+              DanceabilitySelect={this.handleDanceabilitySelect}
+              EnergySelect={this.handleEnergySelect}
+              LivenessSelect={this.handleLivenessSelect}h
+              DanceabilityValue={this.state.DanceabilityValue}
+              EnergyValue={this.state.EnergyValue}
+              LivenessValue={this.state.LivenessValue}
+              handleDanceabilityValueChange={this.handleDanceabilityValueChange}
+              handleEnergyValueChange={this.handleEnergyValueChange}
+              handleLivenessValueChange={this.handleLivenessValueChange} />
+          </div>
           <div className="App-playlist">
             <SearchResults searchResults={this.state.searchResults} onAdd={this.addTrack}/>
             <PlayList playlistTracks={this.state.playlistTracks} onSave={this.savePlaylist} onNameChange={this.updatePlaylistName} playlistName={this.state.playlistName} onRemove={this.removeTrack}/>
