@@ -1,5 +1,5 @@
 
-const clientID = '78272ce624b84226a22f0f3dc2111fa0';
+const clientID = 'PUT_CLIENT_ID_HERE';
 const redirectURI = 'https://jamboard.surge.sh/';
 let userAccessToken;
 
