@@ -7,7 +7,7 @@ You can look at the Documentation for React at their site. This project used **R
 create a web app that allows a user to make playlists for thier [Spotify Account](https://www.spotify.com/) 
 and search through Spotify's library using different paramaters.
 
-A live version of the site can be seen here: [JamBoard](jamboard.surge.sh)
+A live version of the site can be seen here: [JamBoard](https://jamboard.surge.sh/)
 
 Thank you to the team at [Surge](https://surge.sh/) for providing the ability to see this app in action! 
 
